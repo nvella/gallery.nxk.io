@@ -1,0 +1,38 @@
+@media only screen and (max-width: 768px) {
+    body {
+        margin:0;
+        padding: 0;
+    }
+
+    .centre-block {
+        width: 100% !important;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .left-col {
+        display: none;
+    }
+
+    .main-col {
+        width: 100%;
+        box-sizing: border-box;
+        float: initial;
+        margin-right: 0px;
+    }
+
+    .mobile-only {
+        display: block !important;
+    }
+
+    .site-title {
+        padding-bottom: 0;
+        margin: 0 !important;
+    }
+
+    .col-box {
+        box-sizing: border-box;
+    }
+}

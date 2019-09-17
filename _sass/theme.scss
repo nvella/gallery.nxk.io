@@ -1,0 +1,125 @@
+$primary-bg: grey; //rgb(0,0,175);
+$secondary-bg: white; //rgb(0,168,175);
+$content-bg: white; //rgb(175, 168, 175);
+
+body {
+    background: $primary-bg;
+
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+}
+
+img { 
+    max-width:100%;
+    width: auto;
+    height: auto;
+}
+
+.centre-block {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.centre-block > h1 {
+    text-align: center;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
+.site-title {
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0 !important;
+    display: inline-block;
+    text-transform: lowercase;
+}
+
+.site-description {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+.container {
+    width: 100%;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.main-col {
+    display: inline-block;
+    box-sizing: border-box;
+    // margin-right: 20px;
+    width: 100%;
+}
+
+.col-box {
+    width: 100%;
+
+    background-color: $content-bg;
+    box-shadow: 10px 10px 0px 0px black;
+    box-sizing: border-box;
+    display: inline-block;
+
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.nav {
+    margin-bottom: 20px;
+}
+
+.nav > ul {
+    box-sizing: border-box;
+    display: block;
+    padding: 0;
+}
+
+.nav > ul > li {
+    display: inline;
+    text-transform: lowercase;
+}
+
+.nav > ul > li:not(:last-child):after {
+    content: " | ";    
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 5px 0px 5px 0px;
+    text-transform: lowercase;
+    background-color: $secondary-bg;
+    color: black; //$primary-bg;
+}
+
+.post-list {
+    display: block;
+    padding: 0;
+}
+
+.post-list > li {
+    display: block;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.post-tags {
+    font-style: italic;
+}
+
+.post-archive {
+    margin-top: 10px;
+}
+
+.buttons > h3 {
+    margin-bottom: 8px;
+}
+
+.buttons > img, .buttons > a > img {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+@import "mobile";

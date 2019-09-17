@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<div class="home">
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
+
+  <div class="centre-block">
+    {{ content }} 
+
+    <hr/>
+    <h1>Albums</h1>
+    <ul>
+      {%- for album in site.albums -%}
+      <li><a href="{{ album.url | relative_url }}">{{ album.title }}</a><br><p>{{ album.content }}</p></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+</div>
