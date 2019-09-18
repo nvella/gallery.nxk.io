@@ -13,7 +13,8 @@ class AlbumsGenerator
   end
 
   def jekyll_albums_col; File.join(@jekyll_site_path, '_albums'); end
-  def jekyll_images_col; File.join(@jekyll_site_path, 'images'); end
+  def jekyll_photos_col; File.join(@jekyll_site_path, '_photos'); end
+  def jekyll_images_dir; File.join(@jekyll_site_path, 'images'); end
 
   def run
     log "generate_albums..."
@@ -39,8 +40,11 @@ class AlbumsGenerator
     # Delete all albums
     clear_dir(jekyll_albums_col)
 
-    # Delete all images
-    clear_dir(jekyll_images_col)
+    # Delete all photo entries
+    clear_dir(jekyll_photos_col)
+
+    # Delete image symlinks and thumbs
+    clear_dir(jekyll_images_dir)
   end
 
   def do_album(album_path)
@@ -57,25 +61,50 @@ class AlbumsGenerator
     album = YAML.load_file(album_yml)
     
     # Write album markdown
+    marked_photos = album['photos'].select {|p| p['marked']}
     album_md = {
-      'id' => album['id'],
+      'album_id' => album['id'],
       'title' => album['title'],
       'layout' => 'album',
-      'photos' => []
+      'photos' => marked_photos.map {|p| p['id']}
     }
 
-    # Process photos
-    album["photos"].select {|p| p["marked"]}.each do |photo|
-      album_photo_md = {
-        'file_name' => photo['file_name'],
-        'title' => photo['title']
-      }
-
-      album_md['photos'].push(album_photo_md)
-    end
-    
     album_md_path = File.join(jekyll_albums_col, "#{album['id']}.md")
     File.open(album_md_path, 'w') { |file| file.write("#{YAML.dump(album_md).chomp}\n---\n\n#{album["description"]}") }
+
+    # Process photos
+    marked_photos.each_with_index do |photo, index|
+      prev_photo = index > 0 ? marked_photos[index - 1] : nil
+      next_photo = index < marked_photos.length - 1 ? marked_photos[index + 1] : nil
+  
+      photo_md = {
+        'photo_id' => photo['id'],
+        'album_id' => album['id'],
+        'file_name' => "#{photo['id']}#{File.extname(photo['file_name'])}",
+        'title' => photo['title'],
+        'next_photo_id' => next_photo&.dig('id'),
+        'prev_photo_id' => prev_photo&.dig('id'),
+        'number' => index + 1,
+        'album_total' => marked_photos.length,
+        'date' => photo['date'],
+        'tags' => photo['tags'],
+        'layout' => 'photo'
+      }
+
+      photo_md_path =  File.join(jekyll_photos_col, "#{photo['id']}.md")
+      File.open(photo_md_path, 'w') { |file| file.write("#{YAML.dump(photo_md).chomp}\n---\n\n#{photo["description"]}") }
+
+      # Symlink photo
+      File.symlink(File.join(full_path, photo['file_name']), File.join(jekyll_images_dir, photo_md['file_name']))
+
+      # Make thumbnail
+      system "convert", \
+          "-quality", "99", \
+          "-format", "jpg", \
+          "-thumbnail", "200x200", \
+          File.join(full_path, photo['file_name']), \
+          File.join(jekyll_images_dir, "thumb.#{photo_md['file_name']}")
+    end
   end
 
   def log(msg)

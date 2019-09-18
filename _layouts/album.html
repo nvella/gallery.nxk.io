@@ -2,13 +2,22 @@
 layout: default
 ---
 
-<div class="album">
-  <div class="centre-block">
-    {%- if page.title -%}
-      <h1 class="page-heading">{{ page.title }}</h1>
-    {%- endif -%}
+<div class="album centre-block">
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
 
-    {{ content }}
+  {{ content }}
+
+  <hr/>
+
+  <div class="thumbs">
+    {%- for photo_id in page.photos -%}
+    {%- assign photo = site.photos | where: "photo_id", photo_id | first -%}
+    <a href="{{ photo.url | relative_url }}">
+      <img src="/images/thumb.{{ photo.file_name }}"/>
+    </a>
+    {%- endfor -%}
   </div>
 </div>
   

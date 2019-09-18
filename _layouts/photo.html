@@ -1,0 +1,38 @@
+---
+layout: default
+---
+
+<div class="photo">
+  <div class="centre-block">
+    {%- if page.title -%}
+      <h1 class="page-heading">{{ page.title }}</h1>
+    {%- endif -%}
+
+    <img src="/images/{{page.file_name}}"/>
+
+    {{ content }}
+
+    <div>
+        {%- if page.prev_photo_id -%}
+        {% assign prev_photo = site.photos | where: "photo_id", page.prev_photo_id | first %}
+        <span style="float: left;">
+            <a href="{{prev_photo.url | relative_url}}">[prev]</a>
+        </span>
+        {%- endif -%}
+
+        {% assign album = site.albums | where: "album_id", page.album_id | first %}
+        <div style="text-align: center;">
+            <a href="{{album.url | relative_url}}">Photo {{page.number}} of {{page.album_total}}</a>
+        </div>
+
+        {%- if page.next_photo_id -%}
+        {% assign next_photo = site.photos | where: "photo_id", page.next_photo_id | first %}
+        <span style="float: right;">
+            <a href="{{next_photo.url | relative_url}}">[next]</a>
+        </span>
+        {%- endif -%}
+    </div>
+    
+  </div>
+</div>
+  

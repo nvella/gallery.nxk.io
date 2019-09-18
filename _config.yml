@@ -39,3 +39,5 @@ plugins:
 collections:
   albums:
     output: true
+  photos:
+    output: true
